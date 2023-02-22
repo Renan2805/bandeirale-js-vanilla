@@ -1,0 +1,89 @@
+
+html {
+  font-family: 'Courier New', Courier, monospace;
+}
+
+header {
+  display: flex;
+  justify-content: center;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+  margin: 0 auto;
+}
+
+h1 {
+  text-align: center;
+}
+
+.green-font {
+  color: green
+}
+
+#img_bandeira {
+  aspect-ratio: 5 / 3;
+  width: 200px;
+  margin: 20px;
+  border: 1px solid black;
+  border-radius: 10px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  width: 100%;
+}
+
+input {
+  background-color: rgb(184, 184, 184);
+  outline: none;
+  border: 0;
+  border-radius: 10px 10px 0 0;
+  padding: 10px;
+
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+}
+
+button {
+  padding: 10px;
+
+  border: 0;
+  border-radius: 0 0 10px 10px;
+
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+#chutes {
+  margin: 10px 0 10px;
+  min-width: 100%;
+}
+
+.chute:nth-child(1) {
+  border-radius: 5px 5px 0 0;
+}
+
+.chute:last-child {
+  border-radius: 0 0 5px 5px ;
+}
+
+.chute {
+  min-width: 30%;
+
+  font-size: 24px;
+  font-weight: bold;
+  margin: 5px auto;
+  text-align: center;
+
+  background-color: rgb(149, 149, 149);
+  line-break: anywhere;
+}
