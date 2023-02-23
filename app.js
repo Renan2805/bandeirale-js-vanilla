@@ -1,3 +1,4 @@
+
 async function fetchData() {
   try {
     const response = await fetch('https://restcountries.com/v3.1/all')
@@ -27,12 +28,16 @@ function proximoPais(pais, paises) {
 
   console.log('Resposta: ', pais.nome)
 
+  const imgBandeira = document.querySelector('#img_bandeira')
+  const h2NomePais = document.querySelector('#nome_pais')
+  const inputNome = document.querySelector('#ipt_nome')
+
   setTimeout(() => {
-    img_bandeira.src = pais.bandeira
+    imgBandeira.src = pais.bandeira
     const divChutes = document.querySelector('#chutes')
     divChutes.innerHTML = ''
-    nome_pais.innerText = ''
-    ipt_nome.value = ''
+    h2NomePais.innerText = ''
+    inputNome.value = ''
   }, 1000)
 
   return pais
@@ -49,16 +54,18 @@ function criarChute(chute) {
 function handleGuess(e, nomePais = '') {
   e.preventDefault()
 
-  var guess = ipt_nome.value.toLowerCase()
+  const inputNome = document.querySelector('#ipt_nome')
+
+  var guess = inputNome.value.toLowerCase()
+  guess = formatarNomePais(guess)
   nomePais = nomePais.toLowerCase()
+  nomePais = formatarNomePais(nomePais)
 
   const h2NomePais = document.querySelector('#nome_pais')
 
   criarChute(guess)
 
-  // '0' ==  0 true
-  //  0  ==  0 true
-  // '0' === 0 false
+  inputNome.value = ''
 
   var correto = guess == nomePais
 
@@ -78,6 +85,11 @@ O numero então é multiplicado pelo tamanho do array dos paises
 Usando Math.floor() o produto da multiplicação é arredondado para o numero inteiro menor
 Então a função retorna um elemento aleatório do array 
 */
+
+function formatarNomePais(nome) {
+  if(typeof nome != "string") return nome
+  return nome.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+}
 
 function getRandomCountry(arr) {
   if(!Array.isArray(arr)) {
@@ -109,7 +121,9 @@ async function app() {
 
   var resposta;
 
-  btn_guess.addEventListener('click', (e) => {
+  const h2NomePais = document.querySelector('#nome_pais')
+  const btnGuess  = document.querySelector('#btn_guess')
+  btnGuess.addEventListener('click', (e) => {
     resposta = handleGuess(e, objPais.nome)
     if(resposta) {
       objPais = proximoPais(objPais, data) 
@@ -120,18 +134,24 @@ async function app() {
     setScore(score)
   })
 
-  btn_desistir.addEventListener('click', (e) => {
+  const btnDesistir = document.querySelector('#btn_desistir')
+  btnDesistir.addEventListener('click', (e) => {
     e.preventDefault()
     var desistiu = confirm('Deseja desistir?')
     if(desistiu) {
+      h2NomePais.innerText = objPais.nome
       objPais = proximoPais(objPais, data)
       score = 0
       setScore(score)
     }
   })
 
-  nome_pais.innerText = resposta
-  img_bandeira.src = objPais.bandeira
+  
+
+  h2NomePais.innerText = resposta ? resposta : ''
+
+  const imgBandeira = document.querySelector('#img_bandeira')
+  imgBandeira.src = objPais.bandeira
 }
 
 app()
