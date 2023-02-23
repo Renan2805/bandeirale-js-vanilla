@@ -17,6 +17,35 @@ async function fetchData() {
   }
 }
 
+function proximoPais(pais, paises) {
+  const newPais = getRandomCountry(paises)
+  
+  pais = {
+    nome: newPais.translations.por.common,
+    bandeira: newPais.flags.png
+  }
+
+  console.log(pais)
+
+  setTimeout(() => {
+    img_bandeira.src = pais.bandeira
+    const divChutes = document.querySelector('#chutes')
+    divChutes.innerHTML = ''
+    nome_pais.innerText = ''
+    ipt_nome.value = ''
+  }, 2000)
+
+  return pais
+}
+
+function criarChute(chute) {
+  const divChutes = document.querySelector('#chutes')
+  const rowChute = document.createElement('p')
+  rowChute.classList.add('chute')
+  rowChute.innerText = chute
+  divChutes.appendChild(rowChute)
+}
+
 function handleGuess(e, nomePais = '') {
   e.preventDefault()
 
@@ -25,11 +54,11 @@ function handleGuess(e, nomePais = '') {
 
   const h2NomePais = document.querySelector('#nome_pais')
 
-  const divChutes = document.querySelector('#chutes')
-  const rowChute = document.createElement('p')
-  rowChute.classList.add('chute')
-  rowChute.innerText = guess
-  divChutes.appendChild(rowChute)
+  criarChute(guess)
+
+  // '0' ==  0 true
+  //  0  ==  0 true
+  // '0' === 0 false
 
   var correto = guess == nomePais
 
@@ -60,7 +89,7 @@ async function app() {
   var pais = getRandomCountry(data)
   console.log(pais)
 
-  const objPais = {
+  var objPais = {
     nome: pais.translations.por.common,
     bandeira: pais.flags.png
   }
@@ -69,6 +98,7 @@ async function app() {
 
   btn_guess.addEventListener('click', (e) => {
     resposta = handleGuess(e, objPais.nome)
+    resposta ? objPais = proximoPais(objPais, data) : ''
   })
 
   nome_pais.innerText = resposta
