@@ -25,7 +25,7 @@ function proximoPais(pais, paises) {
     bandeira: newPais.flags.png
   }
 
-  console.log(pais)
+  console.log('Resposta: ', pais.nome)
 
   setTimeout(() => {
     img_bandeira.src = pais.bandeira
@@ -33,7 +33,7 @@ function proximoPais(pais, paises) {
     divChutes.innerHTML = ''
     nome_pais.innerText = ''
     ipt_nome.value = ''
-  }, 2000)
+  }, 1000)
 
   return pais
 }
@@ -84,21 +84,33 @@ function getRandomCountry(arr) {
 }
 
 async function app() {
+  
   var data = await fetchData()
-
+  
   var pais = getRandomCountry(data)
-  console.log(pais)
-
+  
   var objPais = {
     nome: pais.translations.por.common,
     bandeira: pais.flags.png
   }
 
+  console.log('Resposta: ', objPais.nome)
+
+  const h2Score = document.querySelector('#h2_score')
+  var score = 0
+  h2Score.innerText = score
+
   var resposta;
 
   btn_guess.addEventListener('click', (e) => {
     resposta = handleGuess(e, objPais.nome)
-    resposta ? objPais = proximoPais(objPais, data) : ''
+    if(resposta) {
+      objPais = proximoPais(objPais, data) 
+      score += 1
+    }else {
+      score = 0
+    }
+    h2Score.innerText = score
   })
 
   nome_pais.innerText = resposta
