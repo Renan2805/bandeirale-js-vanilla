@@ -68,6 +68,10 @@ function handleGuess(e, nomePais = '') {
 
 }
 
+function desistir() {
+  return confirm('Deseja desistir?')
+}
+
 /*
 Math.random() retorna um numero psêudoaleatório entre 0 e 1.
 O numero então é multiplicado pelo tamanho do array dos paises
@@ -83,6 +87,11 @@ function getRandomCountry(arr) {
   return arr[Math.floor(Math.random() * arr.length)]
 }
 
+function setScore(newScore) {
+  const h2Score = document.querySelector('#h2_score')
+  h2Score.innerText = newScore
+}
+
 async function app() {
   
   var data = await fetchData()
@@ -96,9 +105,7 @@ async function app() {
 
   console.log('Resposta: ', objPais.nome)
 
-  const h2Score = document.querySelector('#h2_score')
   var score = 0
-  h2Score.innerText = score
 
   var resposta;
 
@@ -110,7 +117,17 @@ async function app() {
     }else {
       score = 0
     }
-    h2Score.innerText = score
+    setScore(score)
+  })
+
+  btn_desistir.addEventListener('click', (e) => {
+    e.preventDefault()
+    var desistiu = confirm('Deseja desistir?')
+    if(desistiu) {
+      objPais = proximoPais(objPais, data)
+      score = 0
+      setScore(score)
+    }
   })
 
   nome_pais.innerText = resposta

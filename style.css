@@ -65,8 +65,8 @@ button {
   transition: all 200ms ease-in-out;
 }
 
-button:hover,
-button:focus {
+#btn_guess:hover,
+#btn_guess:focus {
   background-color: rgba(15,163,79,1);
   outline: 0;
 
@@ -75,6 +75,16 @@ button:focus {
   box-shadow: 0px 0px 40px 20px rgba(15,163,79,1);
 
   cursor: pointer;
+}
+
+#btn_desistir {
+
+  background-color: crimson;
+  padding: .375rem .75rem;
+
+  border-radius: 10px;
+  margin: 5px 0;
+  align-self: flex-end;
 }
 
 #chutes {
