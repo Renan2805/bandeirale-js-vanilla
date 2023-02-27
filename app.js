@@ -22,11 +22,14 @@ function proximoPais(pais, paises) {
   const newPais = getRandomCountry(paises)
   
   pais = {
-    nome: newPais.translations.por.common,
+    nomes: [
+      newPais.translations.por.common,
+      newPais.name.common
+    ],
     bandeira: newPais.flags.png
   }
 
-  console.log('Resposta: ', pais.nome)
+  console.log('Resposta: ', pais.nomes)
 
   const imgBandeira = document.querySelector('#img_bandeira')
   const h2NomePais = document.querySelector('#nome_pais')
@@ -51,15 +54,15 @@ function criarChute(chute) {
   divChutes.appendChild(rowChute)
 }
 
-function handleGuess(e, nomePais = '') {
+function handleGuess(e, nomesPais = []) {
   e.preventDefault()
 
   const inputNome = document.querySelector('#ipt_nome')
 
   var guess = inputNome.value.toLowerCase()
   guess = formatarNomePais(guess)
-  nomePais = nomePais.toLowerCase()
-  nomePais = formatarNomePais(nomePais)
+  nomesPais = nomesPais.map(nome => nome.toLowerCase())
+  nomesPais = nomesPais.map(nome => formatarNomePais(nome))
 
   const h2NomePais = document.querySelector('#nome_pais')
 
@@ -67,9 +70,9 @@ function handleGuess(e, nomePais = '') {
 
   inputNome.value = ''
 
-  var correto = guess == nomePais
+  var correto = nomesPais.includes(guess)
 
-  correto ? h2NomePais.innerText = nomePais : h2NomePais.innerText = ''
+  correto ? h2NomePais.innerText = nomesPais[0] : h2NomePais.innerText = ''
 
   return correto
 
@@ -110,12 +113,17 @@ async function app() {
   
   var pais = getRandomCountry(data)
   
+  console.log(pais)
+
   var objPais = {
-    nome: pais.translations.por.common,
+    nomes: [
+      pais.translations.por.common,
+      pais.name.common
+    ],
     bandeira: pais.flags.png
   }
 
-  console.log('Resposta: ', objPais.nome)
+  console.log('Resposta: ', objPais.nomes)
 
   var score = 0
 
@@ -124,7 +132,7 @@ async function app() {
   const h2NomePais = document.querySelector('#nome_pais')
   const btnGuess  = document.querySelector('#btn_guess')
   btnGuess.addEventListener('click', (e) => {
-    resposta = handleGuess(e, objPais.nome)
+    resposta = handleGuess(e, objPais.nomes)
     if(resposta) {
       objPais = proximoPais(objPais, data) 
       score += 1
@@ -139,7 +147,7 @@ async function app() {
     e.preventDefault()
     var desistiu = confirm('Deseja desistir?')
     if(desistiu) {
-      h2NomePais.innerText = objPais.nome
+      h2NomePais.innerText = objPais.nomes[0]
       objPais = proximoPais(objPais, data)
       score = 0
       setScore(score)
