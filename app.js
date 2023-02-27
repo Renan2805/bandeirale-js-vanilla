@@ -78,10 +78,6 @@ function handleGuess(e, nomesPais = []) {
 
 }
 
-function desistir() {
-  return confirm('Deseja desistir?')
-}
-
 /*
 Math.random() retorna um numero psêudoaleatório entre 0 e 1.
 O numero então é multiplicado pelo tamanho do array dos paises
@@ -107,13 +103,52 @@ function setScore(newScore) {
   h2Score.innerText = newScore
 }
 
+function toggleConfig() {
+  const modal = document.querySelector('#config-modal')
+
+  var isOpen = modal.style.display == 'block' ? true : false
+  
+  console.log(toggle_america.value)
+
+  if(isOpen) {
+    modal.style.display = 'none'
+  } else modal.style.display = 'block'
+}
+
+function handleConfig(id, checked) {
+  switch(id) {
+    case 'toggle_america':
+      continentes.append('america')
+  }
+}
+
+var continentes = [
+  'americas'
+]
+
 async function app() {
   
   var data = await fetchData()
   
-  var pais = getRandomCountry(data)
+  const iptEuropa = document.getElementById('toggle_europa')
+  const iptAmerica = document.getElementById('toggle_america')
+  const iptAfrica = document.getElementById('toggle_africa')
+  const iptAsia = document.getElementById('toggle_asia')
+  const iptOceania = document.getElementById('toggle_oceania')
+
+  const toggles = [
+    iptEuropa,
+    iptAmerica,
+    iptAfrica,
+    iptAsia,
+    iptOceania
+  ]
   
-  console.log(pais)
+  toggles.forEach((toggle) => {
+    toggle.addEventListener('click', (e) => handleConfig(e.target.id, e.target.checked))
+  })
+
+  var pais = getRandomCountry(data)
 
   var objPais = {
     nomes: [
@@ -154,7 +189,8 @@ async function app() {
     }
   })
 
-  
+  const btnConfig = document.querySelector('#config')
+  btnConfig.addEventListener('click', () => toggleConfig())
 
   h2NomePais.innerText = resposta ? resposta : ''
 
